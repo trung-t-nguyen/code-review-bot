@@ -32,27 +32,21 @@ def main():
 
     # 2. Construct the prompt with correct Claude format
     prompt_message = {
-        "anthropic_version": "bedrock-2023-05-31",
-        "max_tokens": 1000,
+        "prompt": f"\n\nHuman: You are an expert software engineer conducting a thorough code review. Please analyze the following code diff and provide detailed, constructive feedback.\n\n" +
+                 "Focus your analysis on:\n" +
+                 "1. Code quality and best practices\n" +
+                 "2. Potential bugs or security issues\n" +
+                 "3. Performance considerations\n" +
+                 "4. Maintainability and readability\n" +
+                 "5. Suggestions for improvements with specific examples\n\n" +
+                 f"Here's the code diff to review:\n\n{diff_content}\n\n" +
+                 "Assistant: I'll provide a detailed code review addressing each of the points above.\n\n",
+        "max_tokens_to_sample": 2000,
         "temperature": 0.7,
-        "messages": [
-            {
-                "role": "system",
-                "content": """You are an expert software engineer conducting a thorough code review. Please analyze the following code diff and provide detailed, constructive feedback focusing on:
-                Please analyze the code focusing on:
-                1. Code quality and best practices
-                2. Potential bugs or security issues
-                3. Performance considerations
-                4. Maintainability and readability
-                5. Suggestions for improvements with specific examples"""
-            },
-            {
-                "role": "user",
-                "content": f"Please review this code diff:\n\n{diff_content}"
-            }
-        ]
+        "anthropic_version": "bedrock-2023-05-31",
+        "top_p": 1,
+        "stop_sequences": ["\n\nHuman:"]
     }
-
 
     try:
         # 3. Call AWS Bedrock API
