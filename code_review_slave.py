@@ -4,11 +4,25 @@ import boto3
 import requests
 import json
 
+def read_diff_file(file_path):
+    try:
+        with open(file_path, 'r') as file:
+            return file.read()
+    except FileNotFoundError:
+        print(f"Error: Diff file not found at {file_path}")
+        sys.exit(1)
+    except Exception as e:
+        print(f"Error reading diff file: {str(e)}")
+        sys.exit(1)
+
 def main():
     # Get command line arguments
-    diff_content = sys.argv[1]
+    diff_file_path = sys.argv[1]
     pr_number = sys.argv[2]
     repository = sys.argv[3]
+
+    # Read the diff content from file
+    diff_content = read_diff_file(diff_file_path)
 
     # 1. Initialize AWS Bedrock client
     bedrock = boto3.client(
