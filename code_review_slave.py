@@ -21,7 +21,7 @@ def main():
     pr_number = sys.argv[2]
     repository = sys.argv[3]
 
-    # Read the diff content from file
+     # Read the diff content from file
     diff_content = read_diff_file(diff_file_path)
 
     # 1. Initialize AWS Bedrock client
@@ -37,14 +37,24 @@ def main():
         "temperature": 0.7,
         "messages": [
             {
+                "role": "system",
+                "content": """You are an expert software engineer conducting a thorough code review. Please analyze the following code diff and provide detailed, constructive feedback focusing on:
+                Please analyze the code focusing on:
+                1. Code quality and best practices
+                2. Potential bugs or security issues
+                3. Performance considerations
+                4. Maintainability and readability
+                5. Suggestions for improvements with specific examples"""
+            },
+            {
                 "role": "user",
-                "content": f"Please review this code diff and provide constructive feedback:\n\n{diff_content}"
+                "content": f"Please review this code diff:\n\n{diff_content}"
             }
         ]
     }
 
+
     try:
-        # 3. Call AWS Bedrock API
         # 3. Call AWS Bedrock API
         response = bedrock.invoke_model(
             modelId='anthropic.claude-v2',
