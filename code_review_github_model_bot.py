@@ -26,7 +26,7 @@ def main():
     
     client = OpenAI(
         base_url="https://models.github.ai/inference",
-        api_key=os.environ["GITHUB_TOKEN"],
+        api_key=os.environ["AI_MODEL_PAT_TOKEN"],
     )
 
 
